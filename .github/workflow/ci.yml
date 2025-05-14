@@ -1,0 +1,30 @@
+name: .NET CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          PART2_PROG-version: 'v2.x'
+
+      - name: Restore dependencies
+        run: PART2_PROG restore
+
+      - name: Build
+        run: PART2_PROG build --no-restore --configuration Release
+
+      - name: Run tests
+        run: PART2_PROG test --no-build --configuration Release --verbosity normal
+
